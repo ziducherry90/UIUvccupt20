@@ -34,10 +34,6 @@ const ICON_PLAYERS = [
 
 const STORAGE_KEY = "vccup_admin_data_v1";
 const API_BASE = "http://localhost:8787/api";
-const DEFAULT_ADMIN_PASSCODE = "matchreferee";
-const AUTH_KEY = "vccup_admin_auth_v1";
-const ADMIN_PASS_KEY = "vccup_admin_pass_v1";
-
 const defaultState = () => ({
   matches: MATCHES_FIXTURE.map(m => ({
     ...m,
