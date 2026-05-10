@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UIU VC Cup T20 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a6b2f;
+    --orange: #e85d04;
+    --gold: #c9a84c;
+    --dark: #0a0e14;
+    --card: #111620;
+    --border: rgba(201,168,76,0.25);
+    --text: #e8e4d8;
+    --muted: #8a8070;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(26,107,47,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(232,93,4,0.12) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,20,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 0;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 0; margin-right: auto;
+  }
+  .nav-brand-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--green), var(--orange));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue'; font-size: 20px; color: #fff;
+  }
+  .nav-brand-text { line-height: 1.1; }
+  .nav-brand-text .title { font-family: 'Bebas Neue'; font-size: 18px; letter-spacing: 2px; color: var(--gold); }
+  .nav-brand-text .sub { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  nav a {
+    color: var(--muted); text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 20px 18px;
+    transition: color .2s, border-color .2s;
+    border-bottom: 2px solid transparent;
+    display: flex; align-items: center; gap: 6px;
+  }
+  nav a:hover, nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center; padding: 70px 2rem 60px;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .season-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.1); border: 1px solid var(--border);
+    border-radius: 30px; padding: 6px 18px;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue';
+    font-size: clamp(3rem, 8vw, 7rem);
+    letter-spacing: 4px; line-height: 0.9;
+    background: linear-gradient(180deg, #fff 0%, var(--gold) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .hero-sub {
+    font-size: 18px; color: var(--muted); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .hero-date {
+    font-family: 'Orbitron'; font-size: 13px; color: var(--orange);
+    letter-spacing: 2px;
+  }
+  .partners-row {
+    display: flex; align-items: center; justify-content: center; gap: 32px;
+    margin-top: 30px; flex-wrap: wrap;
+  }
+  .partner-item {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .partner-label { font-size: 9px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+  .partner-chip {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 14px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  }
+  .partner-chip.healthcare { color: #2ab8a0; }
+  .partner-chip.media { color: #e04040; }
+  .partner-chip.gift { color: var(--orange); }
+
+  /* TABS */
+  .tabs-container { position: relative; z-index: 1; padding: 0 2rem; }
+  .tabs {
+    display: flex; gap: 4px;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    border-radius: 12px; padding: 6px;
+    max-width: 900px; margin: 0 auto 36px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    flex: 1; min-width: 120px;
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-family: 'Rajdhani'; font-size: 13px;
+    font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 10px 8px; border-radius: 8px;
+    transition: all .2s;
+  }
+  .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--green), #14532d);
+    color: #fff; box-shadow: 0 2px 12px rgba(26,107,47,0.4);
+  }
+  .tab-content { display: none; max-width: 1100px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* SECTION HEADING */
+  .sec-head {
+    text-align: center; margin-bottom: 32px;
+  }
+  .sec-head h2 {
+    font-family: 'Bebas Neue'; font-size: 2.4rem; letter-spacing: 4px;
+    color: var(--gold);
+  }
+  .sec-head p { font-size: 13px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; }
+
+  /* MATCH CARDS */
+  .match-day-group { margin-bottom: 36px; }
+  .day-label {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+  }
+  .day-label span {
+    font-family: 'Orbitron'; font-size: 11px; color: var(--orange);
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+  .day-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .match-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 24px;
+    margin-bottom: 14px;
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 16px;
+    transition: border-color .2s, transform .15s;
+    position: relative; overflow: hidden;
+  }
+  .match-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--green), var(--orange));
+    opacity: 0; transition: opacity .2s;
+  }
+  .match-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .match-card:hover::before { opacity: 1; }
+  .match-card.completed { border-color: rgba(201,168,76,0.15); opacity: 0.8; }
+  .match-card.live { border-color: var(--orange); animation: pulse-border 2s infinite; }
+  @keyframes pulse-border {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232,93,4,0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(232,93,4,0); }
+  }
+
+  .team-side { display: flex; align-items: center; gap: 12px; }
+  .team-side.right { flex-direction: row-reverse; text-align: right; }
+  .team-logo {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .team-name { font-family: 'Bebas Neue'; font-size: 1.3rem; letter-spacing: 1px; line-height: 1; }
+  .team-score { font-family: 'Orbitron'; font-size: 1.4rem; color: var(--gold); font-weight: 700; }
+  .team-score.pending { color: var(--muted); font-size: 0.9rem; font-family: 'Rajdhani'; }
+
+  .match-center { text-align: center; flex-shrink: 0; }
+  .match-num { font-size: 9px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .vs-badge {
+    background: rgba(201,168,76,0.1); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 14px;
+    font-family: 'Bebas Neue'; font-size: 1.3rem; color: var(--gold); letter-spacing: 2px;
+  }
+  .match-time { font-family: 'Orbitron'; font-size: 10px; color: var(--orange); margin-top: 4px; }
+  .match-result {
+    font-size: 11px; color: #4ade80;
+    text-align: center; margin-top: 8px;
+    grid-column: 1 / -1;
+    padding-top: 10px; border-top: 1px solid var(--border);
+  }
+  .live-badge {
+    display: inline-block; background: var(--orange);
+    color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    padding: 2px 8px; border-radius: 4px; margin-left: 6px;
+    animation: blink 1.2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* POINT TABLE */
+  .points-table {
+    width: 100%; border-collapse: collapse;
+    border-radius: 12px; overflow: hidden;
+  }
+  .points-table thead tr {
+    background: linear-gradient(135deg, var(--green), #14532d);
+  }
+  .points-table th {
+    padding: 14px 16px; text-align: left;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); font-weight: 600;
+  }
+  .points-table th:not(:first-child) { text-align: center; }
+  .points-table tbody tr {
+    background: var(--card); border-bottom: 1px solid var(--border);
+    transition: background .15s;
+  }
+  .points-table tbody tr:hover { background: rgba(201,168,76,0.05); }
+  .points-table tbody tr.top { border-left: 3px solid var(--gold); }
+  .points-table td {
+    padding: 14px 16px; font-size: 14px; font-weight: 500;
+  }
+  .points-table td:not(:first-child) { text-align: center; }
+  .team-cell { display: flex; align-items: center; gap: 10px; }
+  .team-dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; border: 1.5px solid var(--border);
+    background: rgba(255,255,255,0.05);
+  }
+  .pts-val { font-family: 'Orbitron'; color: var(--gold); font-size: 1rem; font-weight: 700; }
+  .nrr-val { font-family: 'Orbitron'; font-size: 12px; color: var(--muted); }
+  .form-badges { display: flex; gap: 3px; justify-content: center; }
+  .form-badge {
+    width: 20px; height: 20px; border-radius: 4px;
+    font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  }
+  .form-badge.W { background: rgba(74,222,128,0.2); color: #4ade80; }
+  .form-badge.L { background: rgba(248,113,113,0.2); color: #f87171; }
+  .form-badge.P { background: rgba(138,128,112,0.2); color: var(--muted); }
+  .qual-label {
+    font-size: 9px; letter-spacing: 1px; color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* STATS CARDS */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px; margin-bottom: 32px;
+  }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+  }
+  .stat-card-head {
+    background: linear-gradient(135deg, rgba(26,107,47,0.4), rgba(20,83,45,0.3));
+    padding: 12px 16px; display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-icon { font-size: 18px; }
+  .stat-title { font-family: 'Bebas Neue'; font-size: 1.1rem; letter-spacing: 2px; color: var(--gold); }
+  .stat-list { }
+  .stat-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid rgba(201,168,76,0.08);
+    transition: background .15s;
+  }
+  .stat-row:hover { background: rgba(255,255,255,0.03); }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-rank {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(201,168,76,0.1); border: 1px solid var(--border);
+    font-size: 11px; font-weight: 700; color: var(--gold);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .stat-rank.r1 { background: rgba(201,168,76,0.25); border-color: var(--gold); }
+  .stat-player { flex: 1; }
+  .stat-player-name { font-size: 14px; font-weight: 600; line-height: 1; }
+  .stat-player-team { font-size: 11px; color: var(--muted); }
+  .stat-value { font-family: 'Orbitron'; font-size: 1.1rem; font-weight: 700; color: var(--orange); }
+  .stat-value-label { font-size: 9px; color: var(--muted); text-align: right; }
+
+  /* MOM SECTION */
+  .mom-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .mom-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px;
+    text-align: center; transition: transform .15s, border-color .2s;
+    position: relative; overflow: hidden;
+  }
+  .mom-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+  .mom-card::after {
+    content: '⭐ MAN OF THE MATCH';
+    position: absolute; top: 12px; right: -28px;
+    background: var(--orange); color: #fff;
+    font-size: 8px; font-weight: 700; letter-spacing: 1px;
+    padding: 4px 40px; transform: rotate(45deg);
+  }
+  .mom-match { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .mom-avatar {
+    width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 12px;
+    background: linear-gradient(135deg, var(--green), var(--orange));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 900; color: #fff;
+    border: 3px solid var(--gold);
+    font-family: 'Bebas Neue';
+  }
+  .mom-name { font-family: 'Bebas Neue'; font-size: 1.4rem; letter-spacing: 1px; }
+  .mom-team { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .mom-stat {
+    background: rgba(201,168,76,0.08); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 13px; font-weight: 600; color: var(--gold);
+  }
+  .mom-pending {
+    font-size: 12px; color: var(--muted); font-style: italic;
+    background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px;
+  }
+
+  /* TEAMS */
+  .teams-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+    gap: 20px;
+  }
+  .team-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: border-color .2s, transform .15s;
+  }
+  .team-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .team-card-header {
+    padding: 20px 24px; display: flex; align-items: center; gap: 16px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(26,107,47,0.15), rgba(10,14,20,0));
+  }
+  .team-emblem {
+    width: 64px; height: 64px; border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; flex-shrink: 0;
+  }
+  .team-info { flex: 1; }
+  .team-info h3 { font-family: 'Bebas Neue'; font-size: 1.6rem; letter-spacing: 2px; line-height: 1; }
+  .team-info p { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .team-link-btn {
+    background: linear-gradient(135deg, var(--green), #14532d);
+    color: #fff; text-decoration: none;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 8px 14px;
+    border-radius: 8px; transition: opacity .2s;
+    white-space: nowrap;
+  }
+  .team-link-btn:hover { opacity: 0.85; }
+  .team-card-body { padding: 18px 24px; }
+  .member-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px;
+  }
+  .member-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: 8px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.08);
+    transition: background .15s;
+  }
+  .member-row:hover { background: rgba(201,168,76,0.06); }
+  .member-role-badge {
+    font-size: 8px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 4px; flex-shrink: 0;
+  }
+  .member-role-badge.captain { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .member-role-badge.icon { background: rgba(74,222,128,0.15); color: #4ade80; }
+  .member-role-badge.impact { background: rgba(232,93,4,0.2); color: var(--orange); }
+  .member-role-badge.mentor { background: rgba(139,92,246,0.2); color: #a78bfa; }
+  .member-name { font-size: 13px; font-weight: 600; line-height: 1.2; flex: 1; }
+
+  /* SCHEDULE TABLE compact */
+  .schedule-compact {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; margin-bottom: 24px;
+  }
+  .schedule-compact table { width: 100%; border-collapse: collapse; }
+  .schedule-compact thead tr { background: linear-gradient(135deg, var(--green), #14532d); }
+  .schedule-compact th { padding: 12px 16px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+  .schedule-compact td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border); }
+  .schedule-compact tr:last-child td { border-bottom: none; }
+  .schedule-compact tr:hover td { background: rgba(255,255,255,0.02); }
+  .match-no { font-family: 'Orbitron'; font-size: 11px; color: var(--orange); }
+  .match-vs { font-weight: 600; }
+  .match-time-col { font-family: 'Orbitron'; font-size: 11px; color: var(--gold); }
+  .match-date-col { color: var(--muted); font-size: 12px; }
+  .status-badge {
+    display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 8px; border-radius: 4px; text-transform: uppercase;
+  }
+  .status-badge.upcoming { background: rgba(201,168,76,0.12); color: var(--gold); }
+  .status-badge.live { background: rgba(232,93,4,0.2); color: var(--orange); animation: blink 1.2s infinite; }
+  .status-badge.done { background: rgba(74,222,128,0.12); color: #4ade80; }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 32px 2rem;
+    border-top: 1px solid var(--border); margin-top: 60px;
+    color: var(--muted); font-size: 12px; letter-spacing: 1px;
+  }
+  footer strong { color: var(--gold); }
+
+  @media (max-width: 700px) {
+    nav a { padding: 14px 10px; font-size: 11px; }
+    .match-card { grid-template-columns: 1fr; text-align: center; }
+    .team-side.right { flex-direction: row; }
+    .teams-grid { grid-template-columns: 1fr; }
+    .member-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-brand-icon">VC</div>
+    <div class="nav-brand-text">
+      <div class="title">VC CUP T20</div>
+      <div class="sub">Season 2 · 2026</div>
+    </div>
+  </div>
+  <a href="#" class="active" onclick="showTab('schedule',this)">🗓 Schedule</a>
+  <a href="#" onclick="showTab('results',this)">🏏 Results</a>
+  <a href="#" onclick="showTab('points',this)">📊 Points</a>
+  <a href="#" onclick="showTab('stats',this)">📈 Stats</a>
+  <a href="#" onclick="showTab('mom',this)">⭐ MoM</a>
+  <a href="#" onclick="showTab('teams',this)">🛡 Teams</a>
+  <a href="/admin/" target="_blank">🔐 Admin</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="season-badge">🏆 Season 2 · UIU Vice Chancellor Cup</div>
+  <h1>VC CUP T20<br>2026</h1>
+  <p class="hero-sub">T-20 Cricket Tournament · United International University</p>
+  <p class="hero-date">MAY 12–14, 2026 · ORGANIZED BY UIU SPORTS CLUB</p>
+  <div style="margin-top:18px;display:flex;justify-content:center;">
+    <a href="/admin/" target="_blank" style="background:linear-gradient(135deg,var(--green),#14532d);border:1px solid var(--border);color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;">🔐 Match Referee Admin</a>
+  </div>
+
+  <div class="partners-row">
+    <div class="partner-item">
+      <span class="partner-label">Healthcare Partner</span>
+      <div class="partner-chip healthcare">United Healthcare</div>
+    </div>
+    <div class="partner-item">
+      <span class="partner-label">Media Partner</span>
+      <div class="partner-chip media">Jamuna TV · On Field</div>
+    </div>
+    <div class="partner-item">
+      <span class="partner-label">Gift Partner</span>
+      <div class="partner-chip gift">skin'O</div>
+    </div>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs-container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('schedule',this)">🗓 Schedule</button>
+    <button class="tab-btn" onclick="showTab('results',this)">🏏 Results</button>
+    <button class="tab-btn" onclick="showTab('points',this)">📊 Points Table</button>
+    <button class="tab-btn" onclick="showTab('stats',this)">📈 Stats</button>
+    <button class="tab-btn" onclick="showTab('mom',this)">⭐ Man of Match</button>
+    <button class="tab-btn" onclick="showTab('teams',this)">🛡 Teams</button>
+  </div>
+
+  <!-- SCHEDULE TAB -->
+  <div id="tab-schedule" class="tab-content active">
+    <div class="sec-head">
+      <h2>Match Schedule</h2>
+      <p>All matches played at UIU ground · T20 format</p>
+    </div>
+    <div class="schedule-compact">
+      <table>
+        <thead><tr>
+          <th>Match</th><th>Date</th><th>Time</th><th>Teams</th><th>Status</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="match-no">#1</span></td>
+            <td class="match-date-col">12 May 2026</td>
+            <td class="match-time-col">9:00 AM</td>
+            <td class="match-vs">UIU Rising Stars <span style="color:var(--muted)">vs</span> UIU Bluestockers</td>
+            <td><span class="status-badge upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td><span class="match-no">#2</span></td>
+            <td class="match-date-col">12 May 2026</td>
+            <td class="match-time-col">1:00 PM</td>
+            <td class="match-vs">UIU Thunderbirds <span style="color:var(--muted)">vs</span> UIU Masterminds</td>
+            <td><span class="status-badge upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td><span class="match-no">#3</span></td>
+            <td class="match-date-col">13 May 2026</td>
+            <td class="match-time-col">9:00 AM</td>
+            <td class="match-vs">UIU Masterminds <span style="color:var(--muted)">vs</span> UIU Rising Stars</td>
+            <td><span class="status-badge upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td><span class="match-no">#4</span></td>
+            <td class="match-date-col">13 May 2026</td>
+            <td class="match-time-col">1:00 PM</td>
+            <td class="match-vs">UIU Bluestockers <span style="color:var(--muted)">vs</span> UIU Thunderbirds</td>
+            <td><span class="status-badge upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td><span class="match-no">#5</span></td>
+            <td class="match-date-col">14 May 2026</td>
+            <td class="match-time-col">9:00 AM</td>
+            <td class="match-vs">UIU Bluestockers <span style="color:var(--muted)">vs</span> UIU Masterminds</td>
+            <td><span class="status-badge upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td><span class="match-no">#6</span></td>
+            <td class="match-date-col">14 May 2026</td>
+            <td class="match-time-col">1:00 PM</td>
+            <td class="match-vs">UIU Thunderbirds <span style="color:var(--muted)">vs</span> UIU Rising Stars</td>
+            <td><span class="status-badge upcoming">Upcoming</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Visual match cards -->
+    <div class="match-day-group">
+      <div class="day-label"><span>📅 Day 1 — 12 May 2026</span></div>
+      <div class="match-card">
+        <div class="team-side">
+          <div class="team-logo">🌟</div>
+          <div>
+            <div class="team-name">Rising Stars</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+        <div class="match-center">
+          <div class="match-num">MATCH 1</div>
+          <div class="vs-badge">VS</div>
+          <div class="match-time">9:00 AM</div>
+        </div>
+        <div class="team-side right">
+          <div class="team-logo">🪷</div>
+          <div>
+            <div class="team-name">Bluestockers</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+      </div>
+      <div class="match-card">
+        <div class="team-side">
+          <div class="team-logo">⚡</div>
+          <div>
+            <div class="team-name">Thunderbirds</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+        <div class="match-center">
+          <div class="match-num">MATCH 2</div>
+          <div class="vs-badge">VS</div>
+          <div class="match-time">1:00 PM</div>
+        </div>
+        <div class="team-side right">
+          <div class="team-logo">🧠</div>
+          <div>
+            <div class="team-name">Masterminds</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="match-day-group">
+      <div class="day-label"><span>📅 Day 2 — 13 May 2026</span></div>
+      <div class="match-card">
+        <div class="team-side">
+          <div class="team-logo">🧠</div>
+          <div>
+            <div class="team-name">Masterminds</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+        <div class="match-center">
+          <div class="match-num">MATCH 3</div>
+          <div class="vs-badge">VS</div>
+          <div class="match-time">9:00 AM</div>
+        </div>
+        <div class="team-side right">
+          <div class="team-logo">🌟</div>
+          <div>
+            <div class="team-name">Rising Stars</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+      </div>
+      <div class="match-card">
+        <div class="team-side">
+          <div class="team-logo">🪷</div>
+          <div>
+            <div class="team-name">Bluestockers</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+        <div class="match-center">
+          <div class="match-num">MATCH 4</div>
+          <div class="vs-badge">VS</div>
+          <div class="match-time">1:00 PM</div>
+        </div>
+        <div class="team-side right">
+          <div class="team-logo">⚡</div>
+          <div>
+            <div class="team-name">Thunderbirds</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="match-day-group">
+      <div class="day-label"><span>📅 Day 3 — 14 May 2026</span></div>
+      <div class="match-card">
+        <div class="team-side">
+          <div class="team-logo">🪷</div>
+          <div>
+            <div class="team-name">Bluestockers</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+        <div class="match-center">
+          <div class="match-num">MATCH 5</div>
+          <div class="vs-badge">VS</div>
+          <div class="match-time">9:00 AM</div>
+        </div>
+        <div class="team-side right">
+          <div class="team-logo">🧠</div>
+          <div>
+            <div class="team-name">Masterminds</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+      </div>
+      <div class="match-card">
+        <div class="team-side">
+          <div class="team-logo">⚡</div>
+          <div>
+            <div class="team-name">Thunderbirds</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+        <div class="match-center">
+          <div class="match-num">MATCH 6</div>
+          <div class="vs-badge">VS</div>
+          <div class="match-time">1:00 PM</div>
+        </div>
+        <div class="team-side right">
+          <div class="team-logo">🌟</div>
+          <div>
+            <div class="team-name">Rising Stars</div>
+            <div class="team-score pending">TBD</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS TAB -->
+  <div id="tab-results" class="tab-content">
+    <div class="sec-head">
+      <h2>Match Results</h2>
+      <p>Results will be updated after each match</p>
+    </div>
+    <div style="text-align:center; padding: 60px 20px; color: var(--muted);">
+      <div style="font-size: 64px; margin-bottom: 16px;">🏏</div>
+      <div style="font-family:'Bebas Neue';font-size:2rem;color:var(--gold);letter-spacing:3px;">Tournament Begins May 12</div>
+      <p style="margin-top:8px; font-size:14px;">Match results will appear here after each game is completed.</p>
+      <div style="margin-top: 24px; display: flex; flex-direction:column; gap:10px; max-width:500px; margin-left:auto; margin-right:auto;">
+        <div class="match-card" style="opacity:0.5">
+          <div class="team-side"><div class="team-logo">🌟</div><div><div class="team-name">Rising Stars</div><div class="team-score pending">vs</div></div></div>
+          <div class="match-center"><div class="vs-badge">M1</div><div class="match-time">12 MAY</div></div>
+          <div class="team-side right"><div class="team-logo">🪷</div><div><div class="team-name">Bluestockers</div></div></div>
+        </div>
+        <div class="match-card" style="opacity:0.5">
+          <div class="team-side"><div class="team-logo">⚡</div><div><div class="team-name">Thunderbirds</div></div></div>
+          <div class="match-center"><div class="vs-badge">M2</div><div class="match-time">12 MAY</div></div>
+          <div class="team-side right"><div class="team-logo">🧠</div><div><div class="team-name">Masterminds</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POINTS TAB -->
+  <div id="tab-points" class="tab-content">
+    <div class="sec-head">
+      <h2>Points Table</h2>
+      <p>Round Robin · Top 2 advance to Final</p>
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="points-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th style="text-align:left">Team</th>
+          <th>M</th><th>W</th><th>L</th><th>NR</th>
+          <th>NRR</th><th>PTS</th><th>Form</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="top">
+          <td>1</td>
+          <td><div class="team-cell"><div class="team-dot">🌟</div><div><div>UIU Rising Stars</div><div class="qual-label">— Qualified —</div></div></div></td>
+          <td>0</td><td>0</td><td>0</td><td>0</td>
+          <td class="nrr-val">0.000</td>
+          <td><span class="pts-val">0</span></td>
+          <td><div class="form-badges"><span class="form-badge P">P</span><span class="form-badge P">P</span></div></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><div class="team-cell"><div class="team-dot">⚡</div>UIU Thunderbirds</div></td>
+          <td>0</td><td>0</td><td>0</td><td>0</td>
+          <td class="nrr-val">0.000</td>
+          <td><span class="pts-val">0</span></td>
+          <td><div class="form-badges"><span class="form-badge P">P</span><span class="form-badge P">P</span></div></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><div class="team-cell"><div class="team-dot">🧠</div>UIU Masterminds</div></td>
+          <td>0</td><td>0</td><td>0</td><td>0</td>
+          <td class="nrr-val">0.000</td>
+          <td><span class="pts-val">0</span></td>
+          <td><div class="form-badges"><span class="form-badge P">P</span><span class="form-badge P">P</span></div></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><div class="team-cell"><div class="team-dot">🪷</div>UIU Bluestockers</div></td>
+          <td>0</td><td>0</td><td>0</td><td>0</td>
+          <td class="nrr-val">0.000</td>
+          <td><span class="pts-val">0</span></td>
+          <td><div class="form-badges"><span class="form-badge P">P</span><span class="form-badge P">P</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="margin-top:16px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center; font-size:12px; color:var(--muted);">
+      <span>M = Matches · W = Wins · L = Losses · NR = No Result</span>
+      <span>NRR = Net Run Rate · PTS = Points (Win=2)</span>
+    </div>
+  </div>
+
+  <!-- STATS TAB -->
+  <div id="tab-stats" class="tab-content">
+    <div class="sec-head">
+      <h2>Tournament Statistics</h2>
+      <p>Updated after each match</p>
+    </div>
+    <div class="stats-grid">
+      <!-- Most Runs -->
+      <div class="stat-card">
+        <div class="stat-card-head">
+          <span class="stat-icon">🏏</span>
+          <span class="stat-title">Most Runs</span>
+        </div>
+        <div class="stat-list">
+          <div class="stat-row">
+            <div class="stat-rank r1">1</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Mustafizur Rahman</div>
+              <div class="stat-player-team">UIU Rising Stars</div>
+            </div>
+            <div style="text-align:right">
+              <div class="stat-value">—</div>
+              <div class="stat-value-label">RUNS</div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">2</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Sk Abir Hossain</div>
+              <div class="stat-player-team">UIU Rising Stars</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">RUNS</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">3</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Rasel Ahmed</div>
+              <div class="stat-player-team">UIU Thunderbirds</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">RUNS</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">4</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Shehab Hossain Hemal</div>
+              <div class="stat-player-team">UIU Masterminds</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">RUNS</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">5</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Md Mehedy Hasan</div>
+              <div class="stat-player-team">UIU Bluestockers</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">RUNS</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Most Wickets -->
+      <div class="stat-card">
+        <div class="stat-card-head">
+          <span class="stat-icon">🎯</span>
+          <span class="stat-title">Most Wickets</span>
+        </div>
+        <div class="stat-list">
+          <div class="stat-row">
+            <div class="stat-rank r1">1</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Md. Rezuwan Iqbal</div>
+              <div class="stat-player-team">UIU Thunderbirds</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">WKTS</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">2</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Md. Nazmul Hossain Sakib</div>
+              <div class="stat-player-team">UIU Masterminds</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">WKTS</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">3</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Md. Ehasanul Haque Chowdhary</div>
+              <div class="stat-player-team">UIU Bluestockers</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">WKTS</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">4</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Mahadi Hasan (JTI)</div>
+              <div class="stat-player-team">UIU Rising Stars · Impact</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">WKTS</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">5</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Ashfaque Hossain (GP)</div>
+              <div class="stat-player-team">UIU Masterminds · Impact</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">WKTS</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best Batting SR -->
+      <div class="stat-card">
+        <div class="stat-card-head">
+          <span class="stat-icon">⚡</span>
+          <span class="stat-title">Top Strike Rates</span>
+        </div>
+        <div class="stat-list">
+          <div class="stat-row">
+            <div class="stat-rank r1">1</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Sabbir Ahmed Shezan</div>
+              <div class="stat-player-team">UIU Masterminds · Captain</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">S/R</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">2</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Arif Hossain</div>
+              <div class="stat-player-team">UIU Bluestockers · Captain</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">S/R</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">3</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Md. Mostafizur Rahman Murad</div>
+              <div class="stat-player-team">UIU Rising Stars · Captain</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">S/R</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">4</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Md. Hasan-In-Zaman Chowdhury</div>
+              <div class="stat-player-team">UIU Thunderbirds · Captain</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">S/R</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best Economy -->
+      <div class="stat-card">
+        <div class="stat-card-head">
+          <span class="stat-icon">🎳</span>
+          <span class="stat-title">Best Economy Rate</span>
+        </div>
+        <div class="stat-list">
+          <div class="stat-row">
+            <div class="stat-rank r1">1</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Abdullah Al Ansary (SCB)</div>
+              <div class="stat-player-team">UIU Thunderbirds · Impact</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">ECO</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">2</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Sayeed M. Abid Arman (JTI)</div>
+              <div class="stat-player-team">UIU Bluestockers · Impact</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">ECO</div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-rank">3</div>
+            <div class="stat-player">
+              <div class="stat-player-name">Rasel Ahmed</div>
+              <div class="stat-player-team">UIU Thunderbirds · Icon</div>
+            </div>
+            <div style="text-align:right"><div class="stat-value">—</div><div class="stat-value-label">ECO</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center; padding: 16px; background: rgba(201,168,76,0.05); border: 1px solid var(--border); border-radius: 10px; font-size: 13px; color: var(--muted);">
+      📊 Stats will be populated live as matches are played. Check back after May 12!
+    </div>
+  </div>
+
+  <!-- MOM TAB -->
+  <div id="tab-mom" class="tab-content">
+    <div class="sec-head">
+      <h2>Man of the Match</h2>
+      <p>Awarded after each completed fixture</p>
+    </div>
+    <div class="mom-grid">
+      <div class="mom-card">
+        <div class="mom-match">Match 1 · 12 May · 9:00 AM</div>
+        <div style="font-size: 13px; font-weight:600; margin-bottom:6px;">Rising Stars vs Bluestockers</div>
+        <div class="mom-pending">⏳ Awaiting match result on May 12</div>
+      </div>
+      <div class="mom-card">
+        <div class="mom-match">Match 2 · 12 May · 1:00 PM</div>
+        <div style="font-size: 13px; font-weight:600; margin-bottom:6px;">Thunderbirds vs Masterminds</div>
+        <div class="mom-pending">⏳ Awaiting match result on May 12</div>
+      </div>
+      <div class="mom-card">
+        <div class="mom-match">Match 3 · 13 May · 9:00 AM</div>
+        <div style="font-size: 13px; font-weight:600; margin-bottom:6px;">Masterminds vs Rising Stars</div>
+        <div class="mom-pending">⏳ Awaiting match result on May 13</div>
+      </div>
+      <div class="mom-card">
+        <div class="mom-match">Match 4 · 13 May · 1:00 PM</div>
+        <div style="font-size: 13px; font-weight:600; margin-bottom:6px;">Bluestockers vs Thunderbirds</div>
+        <div class="mom-pending">⏳ Awaiting match result on May 13</div>
+      </div>
+      <div class="mom-card">
+        <div class="mom-match">Match 5 · 14 May · 9:00 AM</div>
+        <div style="font-size: 13px; font-weight:600; margin-bottom:6px;">Bluestockers vs Masterminds</div>
+        <div class="mom-pending">⏳ Awaiting match result on May 14</div>
+      </div>
+      <div class="mom-card">
+        <div class="mom-match">Match 6 · 14 May · 1:00 PM</div>
+        <div style="font-size: 13px; font-weight:600; margin-bottom:6px;">Thunderbirds vs Rising Stars</div>
+        <div class="mom-pending">⏳ Awaiting match result on May 14</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAMS TAB -->
+  <div id="tab-teams" class="tab-content">
+    <div class="sec-head">
+      <h2>Team Profiles</h2>
+      <p>4 teams · UIU Vice Chancellor Cup Season 2</p>
+    </div>
+    <div class="teams-grid">
+
+      <!-- Rising Stars -->
+      <div class="team-card">
+        <div class="team-card-header">
+          <div class="team-emblem">🌟</div>
+          <div class="team-info">
+            <h3>UIU Rising Stars</h3>
+            <p>Cricket Team · Est. 2024</p>
+          </div>
+          <a href="https://uiuvccup.vercel.app/teams/uiu-risingstars" target="_blank" class="team-link-btn">View Profile ↗</a>
+        </div>
+        <div class="team-card-body">
+          <div class="member-grid">
+            <div class="member-row">
+              <span class="member-role-badge captain">Captain</span>
+              <span class="member-name">Md. Mostafizur Rahman Murad</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge icon">Icon</span>
+              <span class="member-name">Mustafizur Rahman</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge icon">Icon</span>
+              <span class="member-name">Sk Abir Hossain</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge impact">Impact</span>
+              <span class="member-name">Mahadi Hasan (JTI)</span>
+            </div>
+            <div class="member-row" style="grid-column: span 2">
+              <span class="member-role-badge mentor">Mentor</span>
+              <span class="member-name">Md. Salam Morshadi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thunderbirds -->
+      <div class="team-card">
+        <div class="team-card-header">
+          <div class="team-emblem">⚡</div>
+          <div class="team-info">
+            <h3>UIU Thunderbirds</h3>
+            <p>Cricket Team · Purple & Gold</p>
+          </div>
+          <a href="https://uiuvccup.vercel.app/teams/uiu-thunderbirds" target="_blank" class="team-link-btn">View Profile ↗</a>
+        </div>
+        <div class="team-card-body">
+          <div class="member-grid">
+            <div class="member-row">
+              <span class="member-role-badge captain">Captain</span>
+              <span class="member-name">Md. Hasan-In-Zaman Chowdhury</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge icon">Icon</span>
+              <span class="member-name">Rasel Ahmed</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge icon">Icon</span>
+              <span class="member-name">Md. Rezuwan Iqbal</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge impact">Impact</span>
+              <span class="member-name">Abdullah Al Ansary (SCB)</span>
+            </div>
+            <div class="member-row" style="grid-column: span 2">
+              <span class="member-role-badge mentor">Mentor</span>
+              <span class="member-name">Hamudi Hasan Sonet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Masterminds -->
+      <div class="team-card">
+        <div class="team-card-header">
+          <div class="team-emblem">🧠</div>
+          <div class="team-info">
+            <h3>UIU Masterminds</h3>
+            <p>Cricket Team · Est. 2026</p>
+          </div>
+          <a href="https://uiuvccup.vercel.app/teams/uiu-masterminds" target="_blank" class="team-link-btn">View Profile ↗</a>
+        </div>
+        <div class="team-card-body">
+          <div class="member-grid">
+            <div class="member-row">
+              <span class="member-role-badge captain">Captain</span>
+              <span class="member-name">Sabbir Ahmed Shezan</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge icon">Icon</span>
+              <span class="member-name">Shehab Hossain Hemal</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge icon">Icon</span>
+              <span class="member-name">Md. Nazmul Hossain Sakib</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge impact">Impact</span>
+              <span class="member-name">Ashfaque Hossain (GP)</span>
+            </div>
+            <div class="member-row" style="grid-column: span 2">
+              <span class="member-role-badge mentor">Mentor</span>
+              <span class="member-name">Robiul Alam</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bluestockers -->
+      <div class="team-card">
+        <div class="team-card-header">
+          <div class="team-emblem">🪷</div>
+          <div class="team-info">
+            <h3>UIU Bluestockers</h3>
+            <p>Cricket Team · Navy & Gold</p>
+          </div>
+          <a href="https://uiuvccup.vercel.app/teams/uiu-bluestockers" target="_blank" class="team-link-btn">View Profile ↗</a>
+        </div>
+        <div class="team-card-body">
+          <div class="member-grid">
+            <div class="member-row">
+              <span class="member-role-badge captain">Captain</span>
+              <span class="member-name">Arif Hossain</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge icon">Icon</span>
+              <span class="member-name">Md Mehedy Hasan</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge icon">Icon</span>
+              <span class="member-name">Md. Ehasanul Haque Chowdhary</span>
+            </div>
+            <div class="member-row">
+              <span class="member-role-badge impact">Impact</span>
+              <span class="member-name">Sayeed M. Abid Arman (JTI)</span>
+            </div>
+            <div class="member-row" style="grid-column: span 2">
+              <span class="member-role-badge mentor">Mentor</span>
+              <span class="member-name">Md. Sadikur Rahman</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick team links -->
+    <div style="margin-top:24px; background: var(--card); border: 1px solid var(--border); border-radius:12px; padding:20px;">
+      <div style="font-family:'Bebas Neue'; font-size:1.2rem; color:var(--gold); letter-spacing:2px; margin-bottom:12px;">🔗 Team Profile Pages</div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <a href="https://uiuvccup.vercel.app/teams/uiu-bluestockers" target="_blank" style="background:rgba(26,107,47,0.15);border:1px solid var(--border);color:var(--text);text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">🪷 UIU Bluestockers ↗</a>
+        <a href="https://uiuvccup.vercel.app/teams/uiu-thunderbirds" target="_blank" style="background:rgba(26,107,47,0.15);border:1px solid var(--border);color:var(--text);text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">⚡ UIU Thunderbirds ↗</a>
+        <a href="https://uiuvccup.vercel.app/teams/uiu-risingstars" target="_blank" style="background:rgba(26,107,47,0.15);border:1px solid var(--border);color:var(--text);text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">🌟 UIU Rising Stars ↗</a>
+        <a href="https://uiuvccup.vercel.app/teams/uiu-masterminds" target="_blank" style="background:rgba(26,107,47,0.15);border:1px solid var(--border);color:var(--text);text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;transition:border-color .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">🧠 UIU Masterminds ↗</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>UIU Vice Chancellor Cup · T-20 Cricket Tournament 2026 · Season 2</strong><br>
+  <span style="margin-top:6px;display:block;">Organized by UIU Sports Club &nbsp;·&nbsp; Healthcare Partner: United Healthcare &nbsp;·&nbsp; Media Partner: Jamuna TV & On Field &nbsp;·&nbsp; Gift Partner: skin'O</span>
+  <span style="margin-top:4px;display:block;">United International University · Supported by DCCSA</span>
+</footer>
+
+<script>
+function showTab(tab, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (el) {
+    el.classList.add('active');
+    // sync nav and tab buttons
+    if (el.tagName === 'A') {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        if (b.getAttribute('onclick') === el.getAttribute('onclick')) b.classList.add('active');
+      });
+    } else {
+      document.querySelectorAll('nav a').forEach(a => {
+        if (a.getAttribute('onclick') === el.getAttribute('onclick')) a.classList.add('active');
+      });
+    }
+  }
+  return false;
+}
+</script>
+</body>
+</html>
