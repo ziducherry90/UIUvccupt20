@@ -33,6 +33,10 @@ const ICON_PLAYERS = [
 ];
 
 const STORAGE_KEY = "vccup_admin_data_v1";
+const API_BASE = "http://localhost:8787/api";
+const DEFAULT_ADMIN_PASSCODE = "matchreferee";
+const AUTH_KEY = "vccup_admin_auth_v1";
+const ADMIN_PASS_KEY = "vccup_admin_pass_v1";
 
 const defaultState = () => ({
   matches: MATCHES_FIXTURE.map(m => ({
@@ -53,12 +57,40 @@ const defaultState = () => ({
 // ── storage ───────────────────────────────────────────────────────────────────
 async function loadData() {
   try {
+    const res = await fetch(`${API_BASE}/tournament`, { method: "GET" });
+    if (res.ok) {
+      const payload = await res.json();
+      if (payload?.data) return payload.data;
+    }
+  } catch (e) {
+    console.warn("API unavailable, falling back to local storage", e);
+  }
+
+  try {
     const r = await window.storage.get(STORAGE_KEY);
     return r ? JSON.parse(r.value) : defaultState();
-  } catch { return defaultState(); }
+  } catch {
+    return defaultState();
+  }
 }
+
 async function saveData(data) {
-  try { await window.storage.set(STORAGE_KEY, JSON.stringify(data)); } catch(e) { console.error(e); }
+  try {
+    const res = await fetch(`${API_BASE}/tournament`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data })
+    });
+    if (res.ok) return;
+  } catch (e) {
+    console.warn("API unavailable, saving to local storage", e);
+  }
+
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 // ── tiny components ───────────────────────────────────────────────────────────
@@ -151,8 +183,15 @@ export default function AdminPanel() {
   const [tab, setTab]       = useState("matches");
   const [toast, setToast]   = useState(null);
   const [saving, setSaving] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(false);
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
 
-  useEffect(() => { loadData().then(setData); }, []);
+  useEffect(() => {
+    const token = window.localStorage.getItem(AUTH_KEY);
+    setIsAuthed(token === "ok");
+    loadData().then(setData);
+  }, []);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -172,6 +211,37 @@ export default function AdminPanel() {
   if (!data) return (
     <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100vh", background:"#0a0e14", color:"#c9a84c", fontFamily:"'Bebas Neue',cursive", fontSize:"2rem", letterSpacing:4 }}>
       LOADING...
+    </div>
+  );
+
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const activePasscode = window.localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_ADMIN_PASSCODE;
+    if (password === activePasscode) {
+      window.localStorage.setItem(AUTH_KEY, "ok");
+      setIsAuthed(true);
+      setPassword("");
+      setAuthError("");
+      return;
+    }
+    setAuthError("Invalid password. Please use Match Referee password.");
+  };
+
+  const handleLogout = () => {
+    window.localStorage.removeItem(AUTH_KEY);
+    setIsAuthed(false);
+  };
+
+  if (!isAuthed) return (
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"#0a0e14", color:"#e8e4d8", fontFamily:"'Rajdhani',sans-serif", padding:"20px" }}>
+      <form onSubmit={handleLogin} style={{ width:"100%", maxWidth:420, background:"#111620", border:"1px solid rgba(201,168,76,.2)", borderRadius:14, padding:"24px" }}>
+        <h1 style={{ fontFamily:"'Bebas Neue',cursive", letterSpacing:3, color:"#c9a84c", marginBottom:6 }}>Match Referee Login</h1>
+        <p style={{ fontSize:12, color:"#8a8070", marginBottom:16 }}>Enter the referee password to manage match results, points and stats. Default password: <strong>matchreferee</strong>.</p>
+        <Input label="Password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Enter password" />
+        {authError && <div style={{ color:"#f87171", fontSize:12, marginTop:10 }}>{authError}</div>}
+        <Btn type="submit" style={{ marginTop:14, width:"100%" }}>Login as Match Referee</Btn>
+      </form>
     </div>
   );
 
@@ -218,6 +288,7 @@ export default function AdminPanel() {
           <span style={{ fontSize:11, color:"#8a8070", letterSpacing:1 }}>
             {saving ? "SAVING..." : "AUTO-SAVE READY"}
           </span>
+          <Btn variant="ghost" onClick={handleLogout} style={{ padding:"6px 10px", fontSize:11 }}>Logout</Btn>
         </div>
       </div>
 
