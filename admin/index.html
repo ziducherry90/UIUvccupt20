@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VC Cup Admin</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#0a0e14;color:#e8e4d8;margin:0}
+    .wrap{max-width:960px;margin:0 auto;padding:24px}
+    .card{background:#111620;border:1px solid #2e3a4f;border-radius:12px;padding:16px;margin-bottom:16px}
+    input,textarea,button,select{width:100%;padding:10px;border-radius:8px;border:1px solid #3b4a63;background:#0d1117;color:#e8e4d8}
+    button{cursor:pointer;background:#1a6b2f;font-weight:700}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .muted{color:#8a8070;font-size:12px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🏏 VC Cup T20 Admin (/admin)</h1>
+  <div id="login" class="card">
+    <h3>Match Referee Login</h3>
+    <p class="muted">Default password: <b>matchreferee</b></p>
+    <input id="pass" type="password" placeholder="Enter password"/>
+    <button onclick="login()" style="margin-top:10px">Login</button>
+    <p id="err" style="color:#f87171"></p>
+  </div>
+
+  <div id="panel" style="display:none">
+    <div class="card">
+      <div class="row">
+        <button onclick="loadData()">Load Data</button>
+        <button onclick="logout()" style="background:#7f1d1d">Logout</button>
+      </div>
+      <p class="muted">Edit tournament JSON and save to backend API (with local backup).</p>
+    </div>
+    <div class="card">
+      <h3>Tournament Data JSON</h3>
+      <textarea id="json" rows="22"></textarea>
+      <div class="row" style="margin-top:10px">
+        <button onclick="saveData()">Save</button>
+        <button onclick="formatJson()" style="background:#374151">Format</button>
+      </div>
+      <p id="status" class="muted"></p>
+    </div>
+  </div>
+</div>
+<script>
+const API_BASE='http://localhost:8787/api';
+const AUTH_KEY='vccup_admin_auth_v1';
+const PASS_KEY='vccup_admin_pass_v1';
+const DEFAULT_PASS='matchreferee';
+const STORE_KEY='vccup_admin_data_v1';
+function isAuthed(){return localStorage.getItem(AUTH_KEY)==='ok'}
+function render(){document.getElementById('login').style.display=isAuthed()?'none':'block';document.getElementById('panel').style.display=isAuthed()?'block':'none';if(isAuthed())loadData();}
+function login(){const p=document.getElementById('pass').value;const active=localStorage.getItem(PASS_KEY)||DEFAULT_PASS;if(p===active){localStorage.setItem(AUTH_KEY,'ok');document.getElementById('err').textContent='';render();}else{document.getElementById('err').textContent='Invalid password';}}
+function logout(){localStorage.removeItem(AUTH_KEY);render();}
+async function loadData(){let data=null;try{const r=await fetch(`${API_BASE}/tournament`);if(r.ok){const j=await r.json();data=j.data;}}catch(e){}
+if(!data){const raw=localStorage.getItem(STORE_KEY);data=raw?JSON.parse(raw):{matches:[],points:[],stats:{runs:[],wickets:[]},mom:[]}}
+document.getElementById('json').value=JSON.stringify(data,null,2);document.getElementById('status').textContent='Loaded';}
+function formatJson(){try{const obj=JSON.parse(document.getElementById('json').value);document.getElementById('json').value=JSON.stringify(obj,null,2);}catch(e){alert('Invalid JSON')}}
+async function saveData(){try{const obj=JSON.parse(document.getElementById('json').value);localStorage.setItem(STORE_KEY,JSON.stringify(obj));
+try{const r=await fetch(`${API_BASE}/tournament`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:obj})});document.getElementById('status').textContent=r.ok?'Saved to API + local backup':'Saved local only (API failed)';}
+catch(e){document.getElementById('status').textContent='Saved local only (API offline)';}}
+catch(e){alert('Invalid JSON')}}
+render();
+</script>
+</body>
+</html>
