@@ -34,8 +34,9 @@ const ICON_PLAYERS = [
 
 const STORAGE_KEY = "vccup_admin_data_v1";
 const API_BASE = "http://localhost:8787/api";
-const ADMIN_PASSCODE = "matchreferee";
+const DEFAULT_ADMIN_PASSCODE = "matchreferee";
 const AUTH_KEY = "vccup_admin_auth_v1";
+const ADMIN_PASS_KEY = "vccup_admin_pass_v1";
 
 const defaultState = () => ({
   matches: MATCHES_FIXTURE.map(m => ({
@@ -216,7 +217,8 @@ export default function AdminPanel() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (password === ADMIN_PASSCODE) {
+    const activePasscode = window.localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_ADMIN_PASSCODE;
+    if (password === activePasscode) {
       window.localStorage.setItem(AUTH_KEY, "ok");
       setIsAuthed(true);
       setPassword("");
@@ -235,7 +237,7 @@ export default function AdminPanel() {
     <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"#0a0e14", color:"#e8e4d8", fontFamily:"'Rajdhani',sans-serif", padding:"20px" }}>
       <form onSubmit={handleLogin} style={{ width:"100%", maxWidth:420, background:"#111620", border:"1px solid rgba(201,168,76,.2)", borderRadius:14, padding:"24px" }}>
         <h1 style={{ fontFamily:"'Bebas Neue',cursive", letterSpacing:3, color:"#c9a84c", marginBottom:6 }}>Match Referee Login</h1>
-        <p style={{ fontSize:12, color:"#8a8070", marginBottom:16 }}>Enter the referee password to manage match results, points and stats.</p>
+        <p style={{ fontSize:12, color:"#8a8070", marginBottom:16 }}>Enter the referee password to manage match results, points and stats. Default password: <strong>matchreferee</strong>.</p>
         <Input label="Password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Enter password" />
         {authError && <div style={{ color:"#f87171", fontSize:12, marginTop:10 }}>{authError}</div>}
         <Btn type="submit" style={{ marginTop:14, width:"100%" }}>Login as Match Referee</Btn>
