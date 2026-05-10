@@ -33,6 +33,7 @@ const ICON_PLAYERS = [
 ];
 
 const STORAGE_KEY = "vccup_admin_data_v1";
+const API_BASE = "http://localhost:8787/api";
 
 const defaultState = () => ({
   matches: MATCHES_FIXTURE.map(m => ({
@@ -53,12 +54,40 @@ const defaultState = () => ({
 // ── storage ───────────────────────────────────────────────────────────────────
 async function loadData() {
   try {
+    const res = await fetch(`${API_BASE}/tournament`, { method: "GET" });
+    if (res.ok) {
+      const payload = await res.json();
+      if (payload?.data) return payload.data;
+    }
+  } catch (e) {
+    console.warn("API unavailable, falling back to local storage", e);
+  }
+
+  try {
     const r = await window.storage.get(STORAGE_KEY);
     return r ? JSON.parse(r.value) : defaultState();
-  } catch { return defaultState(); }
+  } catch {
+    return defaultState();
+  }
 }
+
 async function saveData(data) {
-  try { await window.storage.set(STORAGE_KEY, JSON.stringify(data)); } catch(e) { console.error(e); }
+  try {
+    const res = await fetch(`${API_BASE}/tournament`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data })
+    });
+    if (res.ok) return;
+  } catch (e) {
+    console.warn("API unavailable, saving to local storage", e);
+  }
+
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 // ── tiny components ───────────────────────────────────────────────────────────
